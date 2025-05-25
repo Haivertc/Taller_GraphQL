@@ -49,14 +49,12 @@ const resolvers = {
       });
 
       const canchaGuardada = await nuevaCancha.save();
-        // Esto es lo importante: poblar tipo y categoria
         return await canchaGuardada.populate(['tipo', 'categoria']);
     },
 
     crearReserva: async (_, { input }) => {
       const nuevaReserva = new Reserva({ ...input });
       await nuevaReserva.save();
-      // Traemos la reserva completa con usuario y cancha populados
       return await Reserva.findById(nuevaReserva._id)
       .populate('usuario')
       .populate('cancha');

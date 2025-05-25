@@ -8,27 +8,26 @@ const resolvers = require('./resolvers');
 const startServer = async () => {
   const app = express();
 
-  // Conexión a MongoDB
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
-        
+
     });
-    console.log('✅ Conectado a MongoDB');
+    console.log('Conectado a MongoDB');
   } catch (error) {
-    console.error('❌ Error conectando a MongoDB:', error);
+    console.error('Error conectando a MongoDB:', error);
     process.exit(1);
   }
 
-  // Configurar Apollo Server
   const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    introspection: true,
+    playground: true,  
   });
 
   await server.start();
   server.applyMiddleware({ app });
 
-  // Puerto del servidor
   const PORT = process.env.PORT || 4000;
 
   app.listen(PORT, () => {
